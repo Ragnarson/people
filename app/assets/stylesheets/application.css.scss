@@ -14,4 +14,8 @@
 @import 'components/*';
 @import 'controllers/*';
 
-@import 'shame'
+@import 'shame';
+
+.container-fluid {
+  padding: 0 15px;
+}
