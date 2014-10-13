@@ -5,6 +5,7 @@ class OmniauthCallbacksController <  ApplicationController
   before_filter :check_internal_user, only: :google_oauth2
 
   def google_oauth2
+    Rails.logger.debug(request.env['omniauth.auth'])
     user = User.create_from_google!(request.env['omniauth.auth'])
     sign_in(user)
     redirect_to root_path

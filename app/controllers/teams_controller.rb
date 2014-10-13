@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   include Shared::RespondsController
-  include Slack
+
   expose(:team, attributes: :team_params)
   expose(:teams) { Team.all }
   expose(:users) { User.all.decorate }
