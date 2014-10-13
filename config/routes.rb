@@ -52,9 +52,10 @@ Hrguru::Application.routes.draw do
     get '/components', to: 'pages#components'
   end
 
+  get "slack", controller: "slack_out", action: "check_command"
+
   resources :features, only: [ :index ] do
     resources :strategies, only: [ :update, :destroy ]
   end
   mount Flip::Engine => "/features"
-
 end

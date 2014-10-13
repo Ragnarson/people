@@ -202,6 +202,10 @@ class User
     @abilities_list = abilities_list
   end
 
+  def name
+    first_name + " " + last_name
+  end
+
   private
 
   def save_team_join_time

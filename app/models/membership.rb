@@ -2,6 +2,7 @@ class Membership
   include Mongoid::Document
   include Mongoid::Timestamps
   include Membership::UserAvailability
+  include SlackNotificationsCallbackSupport
 
   field :starts_at, type: Time
   field :ends_at, type: Time

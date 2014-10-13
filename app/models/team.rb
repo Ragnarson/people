@@ -1,6 +1,7 @@
 class Team
   include Mongoid::Document
   include Mongoid::Timestamps
+  include SlackNotificationsCallbackSupport
 
   field :name
 

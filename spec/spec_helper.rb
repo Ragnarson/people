@@ -20,7 +20,7 @@ Spork.prefork do
 
   RSpec.configure do |config|
     WebMock.disable_net_connect!(allow_localhost: true,
-                                 allow: [/rest/, /codeclimate.com/])
+                                 allow: [/rest/, /slack/, /codeclimate.com/])
     config.include FactoryGirl::Syntax::Methods
     config.include Mongoid::Matchers, type: :model
     config.include Devise::TestHelpers, type: :controller
@@ -34,6 +34,7 @@ Spork.prefork do
 
     config.before(:each) do
       DatabaseCleaner.start
+      SLACK.client.stub(:notify)
     end
 
     config.after(:each) do

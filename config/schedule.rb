@@ -19,3 +19,7 @@ every 1.day, at: '8 am' do
   rake 'people:available_checker'
   rake 'people:gravatars_download'
 end
+
+every 1.day, at: '0:05 am' do
+  rake "slack:notification"
+end

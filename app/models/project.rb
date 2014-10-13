@@ -4,6 +4,7 @@ class Project
   include Mongoid::Paranoia
   include Mongoid::History::Trackable
   include Project::UserAvailability
+  include SlackNotificationsCallbackSupport
 
   after_save :update_membership_fields
   after_save :check_potential

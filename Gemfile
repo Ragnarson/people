@@ -54,6 +54,7 @@ gem 'simple_form', '~> 3.1.0.rc2'
 gem 'selectize-rails'
 gem 'font-awesome-rails'
 gem 'messengerjs-rails'
+gem 'slack-notify'
 
 gem 'whenever', require: false
 gem 'versionist'

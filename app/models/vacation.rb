@@ -2,6 +2,7 @@ class Vacation
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paranoia
+  include SlackNotificationsCallbackSupport
 
   field :starts_at, type: Date
   field :ends_at, type: Date
