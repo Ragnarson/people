@@ -11,6 +11,9 @@ class Vacation
 
   validates :starts_at, :ends_at, presence: true
 
+  after_create { |vacation| Hrguru::Application.config.slack.vacation(vacation, "added") }
+  after_update { |vacation| Hrguru::Application.config.slack.vacation(vacation, "updated") }
+
   def date_range
     range = "#{starts_at.to_date}... #{ends_at.to_date}"
   end

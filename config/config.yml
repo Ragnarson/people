@@ -26,6 +26,13 @@ defaults: &defaults
     notify_users:     true
     message_color:    yellow
     room_name:        room_where_to_send_notifications
+  slack:
+    active: false
+    token: your_slack_token
+    team: your_team_name
+    channel: your_slack_channel
+    username: your_bot_name
+    icon_url: your_icon
   tld_length:         1
   feature:
     new_available_view: false
@@ -63,6 +70,8 @@ heroku_settings: &heroku_settings
   tld_length:         <%= ENV['TLD_LENGTH'] %>
   feature:
     new_available_view: <%= ENV['AVAILABLE_VIEW'] %>
+  rollbar:
+    access_token:     <%= ENV['ROLLBAR_ACCESS_TOKEN'] %>
 
 development:
   <<: *defaults
@@ -76,6 +85,13 @@ test:
   hipchat:
     active: false
     api_token: 1234567890
+  slack:
+    active: true
+    token: 123
+    team: people
+    channel: '#people'
+    username: 'PeopleBot'
+    icon_url: 'http://icon.com'
 
 staging:
   <<: *heroku_settings

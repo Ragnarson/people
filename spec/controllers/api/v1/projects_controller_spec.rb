@@ -1,7 +1,9 @@
 require 'spec_helper'
 describe Api::V1::ProjectsController do
   render_views
-  before { controller.class.skip_before_filter :authenticate_api! }
+  before do
+    controller.class.skip_before_filter :authenticate_api!
+  end
 
   let!(:project) { create(:project) }
   let(:project_keys) { %w(name archived potential slug) }
