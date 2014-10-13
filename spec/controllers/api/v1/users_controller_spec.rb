@@ -1,7 +1,9 @@
 require 'spec_helper'
 describe Api::V1::UsersController do
   render_views
-  before { controller.class.skip_before_filter :authenticate_api! }
+  before do
+    controller.class.skip_before_filter :authenticate_api!
+  end
 
   let!(:user) { create(:user) }
   let(:user_keys) { %w(first_name last_name email archived gh_nick role contract_type memberships abilities) }

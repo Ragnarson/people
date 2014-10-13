@@ -19,7 +19,7 @@ Spork.prefork do
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
   RSpec.configure do |config|
-    WebMock.disable_net_connect!(:allow_localhost => true, :allow => /rest/ )
+    WebMock.disable_net_connect!(:allow_localhost => true, :allow => [/rest/, /slack/] )
     config.include FactoryGirl::Syntax::Methods
     config.include Mongoid::Matchers, type: :model
     config.include Devise::TestHelpers, type: :controller
@@ -33,6 +33,7 @@ Spork.prefork do
 
     config.before(:each) do
       DatabaseCleaner.start
+      Hrguru::Application.config.slack.client.stub(:notify)
     end
 
     config.after(:each) do

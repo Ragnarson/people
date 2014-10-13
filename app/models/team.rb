@@ -10,4 +10,8 @@ class Team
   has_one :leader, class_name: 'User', inverse_of: :leader_team
 
   accepts_nested_attributes_for :users
+
+  after_create { |team| Hrguru::Application.config.slack.team(team, "added") }
+  after_update { |team| Hrguru::Application.config.slack.team(team, "updated") }
+  before_destroy { |team| Hrguru::Application.config.slack.team(team, "removed") }
 end
