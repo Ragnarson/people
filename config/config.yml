@@ -34,6 +34,18 @@ defaults: &defaults
     username: your_bot_name
     icon_url: your_icon
   tld_length:         1
+        days:             30
+        weekday:          monday
+  features:
+    hipchat:
+      api_token:            your_hipchat_api_token
+      author_name:          name_for_message_author
+      notify_users:         true
+      message_color:        yellow
+      room_name:            room_where_to_send_notifications
+    teams:
+    positions:
+  tld_length:             1
   feature:
     new_available_view: false
   rollbar:

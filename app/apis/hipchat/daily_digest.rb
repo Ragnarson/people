@@ -6,7 +6,7 @@ class HipChat::DailyDigest
   IN_A_WEEK = 6
 
   def initialize
-    raise 'HipChat set to inactive in configuration' unless AppConfig.hipchat.active
+    raise 'HipChat set to inactive in configuration' unless AppConfig.features.hipchat
 
     set_digest_content
   end

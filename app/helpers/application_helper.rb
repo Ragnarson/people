@@ -41,6 +41,14 @@ module ApplicationHelper
     link_to user.name, user_path(user), data: {toggle: 'tooltip'},title: user.info
   end
 
+  def active_teams?
+    AppConfig.feature.teams
+  end
+
+  def active_positions?
+    AppConfig.features.positions
+  end
+
   private
 
   def icon_generator(name, icon_class, options = {})

@@ -7,6 +7,7 @@ class TeamsController < ApplicationController
   expose(:roles) { Role.all }
 
   before_action :authenticate_admin!, only: [:update, :create, :destroy, :new, :edit]
+  before_action :check_state
 
   def index
     gon.rabl template: 'app/views/teams/teams', as: 'teams'
@@ -49,6 +50,10 @@ class TeamsController < ApplicationController
 
   def team_params
     params.require(:team).permit(:name, :team_leader_id, user_ids: [], users: [])
+  end
+
+  def check_state
+    redirect_to root_path, alert: 'Feature disabled' unless AppConfig.features.teams
   end
 
   def save_team_and_respond status_code

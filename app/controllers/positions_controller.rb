@@ -9,6 +9,7 @@ class PositionsController < ApplicationController
   expose_decorated(:roles) { Role.by_name }
 
   before_filter :authenticate_admin!, except: [:new, :create]
+  before_action :check_state
 
   def new
     position.user = current_user
@@ -43,5 +44,9 @@ class PositionsController < ApplicationController
 
   def position_params
     params.require(:position).permit(:starts_at, :user_id, :role_id)
+  end
+
+  def check_state
+    redirect_to root_path, alert: 'Feature disabled' unless AppConfig.features.positions
   end
 end
