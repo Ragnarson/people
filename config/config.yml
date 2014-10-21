@@ -33,6 +33,7 @@ defaults: &defaults
     channel: your_slack_channel
     username: your_bot_name
     icon_url: your_icon
+    slash_cmd_token: your_slash_cmd_token
   tld_length:         1
   feature:
     new_available_view: false
@@ -92,6 +93,7 @@ test:
     channel: '#people'
     username: 'PeopleBot'
     icon_url: 'http://icon.com'
+    slash_cmd_token: 132456
 
 staging:
   <<: *heroku_settings
