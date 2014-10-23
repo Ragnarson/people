@@ -17,7 +17,7 @@
                     .avatar
                       = user.gravatar_image(size: 100)
                     .name
-                      = link_to user.name, user_path(user)
+                      = link_to profile_link user
                     .available_since
                       available since:
                       #{user.availability.present? ? user.availability.to_date : "since now"}
@@ -63,13 +63,12 @@
           %th Per month
           %th Current project
           %th Projects
-
         %tbody
           - users.each do |user|
             %tr
               %td= user.gravatar_image(size: 40)
               %td
-                = link_to user.name, user_path(user)
+                = link_to profile_link user
                 .icons
                   = mail_to user.email do
                     = tooltip user.email do
@@ -90,3 +89,4 @@
                 = render partial: 'membership', collection: user.next_memberships
                 = 'Potential:' if user.has_potential_projects?
                 = render partial: 'membership', collection: user.potential_memberships
+
