@@ -42,7 +42,7 @@ module ApplicationHelper
   end
 
   def active_teams?
-    AppConfig.feature.teams
+    AppConfig.features.teams
   end
 
   def active_positions?
