@@ -79,7 +79,7 @@ class User
     attributes['oauth_token'] = params['credentials']['token']
     attributes['refresh_token'] = params['credentials']['refresh_token']
     attributes['oauth_expires_at'] = params['credentials']['expires_at']
-    # UserMailer.notify_operations(params['info']['email']).deliver
+    UserMailer.notify_operations(params['info']['email']).deliver
     SendMailJob.new.async.perform(UserMailer, :notify_operations, params['info']['email'])
     User.create!(attributes)
   end
