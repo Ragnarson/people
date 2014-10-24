@@ -9,15 +9,19 @@ class AvailabilityChecker
 
   private
 
+  def available?
+    bilable_count = billable_memberships
+    (bilable_count == 0 || bilable_count <= finishing_work) && !on_vacation && (internal? == 0)
+  end
+
   def on_vacation
     if @user.vacation.present?
       (@user.vacation.starts_at.to_date <= Time.now) && (@user.vacation.ends_at.to_date >= Time.now)
     end
   end
 
-  def available?
-    bilable_count = billable_memberships
-    (bilable_count == 0 || bilable_count <= finishing_work) && !on_vacation
+  def internal?
+    @user.current_memberships.map(&:project).select{|p| p.internal == true}.count
   end
 
   def billable_memberships
