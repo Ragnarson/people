@@ -13,7 +13,7 @@
         %ul.nav.navbar-nav
           %li{ class: menu_class('users') }= link_to "Users", users_path
           %li{ class: menu_class('available_users') }= link_to "Available people", available_users_path
-          %li{ class: menu_class('teams') }= link_to "Teams", teams_path
+          %li{ class: menu_class('teams') }= link_to "Teams", teams_path if active_teams?
           %li{ class: menu_class('vacations') }= link_to "Vacations", vacations_path
           - if current_user.admin?
             %li.dropdown
@@ -24,7 +24,7 @@
                 %li{ class: menu_class('projects') }= link_to "Projects", projects_path
                 %li{ class: menu_class('memberships') }= link_to "Memberships", memberships_path
                 %li{ class: menu_class('roles') }= link_to "Roles", roles_path
-                %li{ class: menu_class('positions') }= link_to "Positions", positions_path
+                %li{ class: menu_class('positions') }= link_to "Positions", positions_path if active_positions?
                 %li{ class: menu_class('abilities') }= link_to "Abilities", abilities_path
                 %li{ class: menu_class('settings') }= link_to 'Settings', settings_path
       - if signed_in?
