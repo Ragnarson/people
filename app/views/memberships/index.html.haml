@@ -2,6 +2,7 @@
   %table.table.table-striped.table-hover
     %thead
       %th Project
+      %th 
       %th User
       %th Role
       %th From
@@ -13,6 +14,17 @@
         %tr
           %td= membership.project.name rescue nil
           %td= profile_link membership.user.decorate rescue nil
+          %td= membership.user.decorate.gravatar_image(size: 40)
+          %td
+            = link_to membership.user.decorate.name, membership.user
+            .icons
+              = mail_to membership.user.email do
+                = tooltip membership.user.email do
+                  = icon 'envelope-o'
+              = tooltip membership.user.skype do
+                = membership.user.decorate.skype_link()
+              = tooltip membership.user.skype do
+                = membership.user.decorate.github_link(icon: true)
           %td= membership.role
           %td= membership.starts_at.to_date
           %td= membership.ends_at ? membership.ends_at.to_date : content_tag("span", "unexpired", class: "label label-default")
