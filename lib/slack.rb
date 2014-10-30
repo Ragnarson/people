@@ -70,7 +70,7 @@ class Slack
     end
   end
 
-  def member(m, action)
+  def membership(m, action)
     case action
     when "removed"
       @client.notify(
@@ -78,9 +78,6 @@ class Slack
     when "added"
       @client.notify(
         "`#{m.user.first_name} #{m.user.last_name}` has been `#{action}` to project: `#{m.project}`.")
-    when "updated"
-      @client.notify(
-        "`#{m.project}`: `#{m.user.first_name} #{m.user.last_name}` has been `#{action}`.")
     end
   end
 

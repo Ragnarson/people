@@ -4,13 +4,10 @@ class Project
   include Mongoid::Paranoia
   include Mongoid::History::Trackable
   include Project::UserAvailability
+  include SlackNotificationsCallbackSupport
 
   after_save :update_membership_fields
   after_save :check_potential
-
-  after_create { |project| Hrguru::Application.config.slack.project(project, "added") }
-  after_update { |project| Hrguru::Application.config.slack.project(project, "updated") }
-  before_destroy { |project| Hrguru::Application.config.slack.project(project, "removed") }
 
   SOON_END = 1.week
   POSSIBLE_TYPES = %w(regular maintenance_support maintenance_development)

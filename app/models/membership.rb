@@ -2,6 +2,7 @@ class Membership
   include Mongoid::Document
   include Mongoid::Timestamps
   include Membership::UserAvailability
+  include SlackNotificationsCallbackSupport
 
   field :starts_at, type: Time
   field :ends_at, type: Time
@@ -29,10 +30,6 @@ class Membership
   after_create :notify_added
   after_update :notify_updated
   before_destroy :notify_removed
-
-  after_create { |membership| Hrguru::Application.config.slack.member(membership, "added") }
-  after_update { |membership| Hrguru::Application.config.slack.member(membership, "updated") }
-  before_destroy { |membership| Hrguru::Application.config.slack.member(membership, "removed") }
 
   scope :active, -> { where(project_potential: false, project_archived: false) }
   scope :potential, -> { where(project_potential: true) }
