@@ -17,7 +17,7 @@ module SlashCommands
 
   def project(command, send_to)
     command.gsub!('project ', '')
-    p = Project.where(name: Regexp.new(command)).first
+    p = Project.where(name: Regexp.new(command, 'i')).first
     if p.present?
       SLACK.notify(
         "Project `#{p.name}`: Kickoff: `#{p.kickoff.present? ? p.kickoff : '-'}`, Ends at: `#{p.end_at.present? ? p.end_at.to_date : '-'}`. \nMembers: `#{p.memberships.present? ? p.memberships.map {|m| m.user.name}.join(", ") : '-'}`.", "#{send_to}")
@@ -40,7 +40,7 @@ module SlashCommands
 
   def team(command, send_to)
     command.gsub!('team ', '')
-    team = Team.where(name: Regexp.new(command)).first
+    team = Team.where(name: Regexp.new(command, 'i')).first
     if team.present?
       SLACK.notify(
         "Team `#{team.name}`: \nLeader: `#{team.leader.present? ? team.leader.name : "-"}`\nTeammates: `#{team.users.present? ? team.users.map {|u| u.name}.join(", ") : '-'}`.", "#{send_to}")

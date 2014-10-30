@@ -58,17 +58,27 @@ describe SlashCommands do
 
   describe '#project' do
     context 'with valid parameter' do
-      it 'sends notification' do
-        expect(SLACK).to receive(:notify).with(
-          "Project `Project`: Kickoff: `-`, Ends at: `#{Date.today}`. \nMembers: `-`.", "@test")
-        subject.send(:project, 'project Project', '@test')
+      context 'when lowercase' do
+        it 'sends notification' do
+          expect(SLACK).to receive(:notify).with(
+            "Project `Project`: Kickoff: `-`, Ends at: `#{Date.today}`. \nMembers: `-`.", "@test")
+          subject.send(:project, 'project project', '@test')
+        end
+      end
+
+      context 'when uppercase' do
+        it 'sends notification' do
+          expect(SLACK).to receive(:notify).with(
+            "Project `Project`: Kickoff: `-`, Ends at: `#{Date.today}`. \nMembers: `-`.", "@test")
+          subject.send(:project, 'project Project', '@test')
+        end
       end
     end
 
     context 'with invalid parameter' do
       it 'calls #not_found' do
         expect(subject).to receive(:not_found).with('Project', '@test')
-        subject.send(:project, 'project', '@test')
+        subject.send(:project, 'project ccc', '@test')
       end
     end
   end
@@ -96,10 +106,20 @@ describe SlashCommands do
         team.leader = sec_user
         team.users = [user]
       end
-      it 'sends notification' do
-        expect(SLACK).to receive(:notify).with(
-          "Team `AA`: \nLeader: `John Doe`\nTeammates: `Tony Montana`.", "@test")
-        subject.send(:team, 'team AA', '@test')
+      context 'when lowercase' do
+        it 'sends notification' do
+          expect(SLACK).to receive(:notify).with(
+            "Team `AA`: \nLeader: `John Doe`\nTeammates: `Tony Montana`.", "@test")
+          subject.send(:team, 'team aa', '@test')
+        end
+      end
+
+      context 'when uppercase' do
+        it 'sends notification' do
+          expect(SLACK).to receive(:notify).with(
+            "Team `AA`: \nLeader: `John Doe`\nTeammates: `Tony Montana`.", "@test")
+          subject.send(:team, 'team AA', '@test')
+        end
       end
     end
 
