@@ -522,15 +522,7 @@ describe Slack do
           it 'sends notification' do
             expect(subject.client).to receive(:notify).with(
               "`Tony Montana` has been `added` to project: `Project`.")
-            subject.member(member, 'added')
-          end
-        end
-
-        context 'has been updated' do
-          it 'sends notification' do
-            expect(subject.client).to receive(:notify).with(
-              "`Project`: `Tony Montana` has been `updated`.")
-            subject.member(member, 'updated')
+            subject.membership(member, 'added')
           end
         end
 
@@ -538,7 +530,7 @@ describe Slack do
           it 'sends notification' do
             expect(subject.client).to receive(:notify).with(
               "`Tony Montana` has been `removed` from project: `Project`.")
-            subject.member(member, 'removed')
+            subject.membership(member, 'removed')
           end
         end
       end
