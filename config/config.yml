@@ -28,8 +28,6 @@ defaults: &defaults
     icon_url: your_icon
     slash_cmd_token: your_slash_cmd_token
   tld_length:         1
-        days:             30
-        weekday:          monday
   features:
     hipchat:
       active:               false
@@ -38,9 +36,8 @@ defaults: &defaults
       notify_users:         true
       message_color:        yellow
       room_name:            room_where_to_send_notifications
-    teams:
-    positions:
-  tld_length:             1
+    teams: false
+    positions: false
   feature:
     new_available_view: false
   rollbar:
@@ -65,13 +62,16 @@ heroku_settings: &heroku_settings
     internal:         <%= ENV['EMAIL_INTERNAL'] %>
     social:           <%= ENV['EMAIL_SOCIAL'] %>
     support:          <%= ENV['EMAIL_SUPPORT'] %>
-  hipchat:
-    active:           <%= ENV['HIPCHAT_ACTIVE'] %>
-    api_token:        <%= ENV['HIPCHAT_API_TOKEN'] %>
-    author_name:      <%= ENV['HIPCHAT_AUTHOR_NAME'] %>
-    notify_users:     <%= ENV['HIPCHAT_NOTIFY_USERS'] %>
-    message_color:    <%= ENV['HIPCHAT_MESSAGE_COLOR'] %>
-    room_name:        <%= ENV['HIPCHAT_ROOM_NAME'] %>
+  features:
+    teams:            <%= ENV['TEAMS_ACTIVE'] %>
+    positions:        <%= ENV['POSITIONS_ACTIVE'] %>
+    hipchat:
+      active:           <%= ENV['HIPCHAT_ACTIVE'] %>
+      api_token:        <%= ENV['HIPCHAT_API_TOKEN'] %>
+      author_name:      <%= ENV['HIPCHAT_AUTHOR_NAME'] %>
+      notify_users:     <%= ENV['HIPCHAT_NOTIFY_USERS'] %>
+      message_color:    <%= ENV['HIPCHAT_MESSAGE_COLOR'] %>
+      room_name:        <%= ENV['HIPCHAT_ROOM_NAME'] %>
   company_name:       <%= ENV['COMPANY_NAME'] %>
   domain:             <%= ENV['DOMAIN'] %>
   tld_length:         <%= ENV['TLD_LENGTH'] %>
@@ -79,6 +79,14 @@ heroku_settings: &heroku_settings
     new_available_view: <%= ENV['AVAILABLE_VIEW'] %>
   rollbar:
     access_token:     <%= ENV['ROLLBAR_ACCESS_TOKEN'] %>
+  slack:
+    active:           <%= ENV['SLACK_ACTIVE'] %>
+    token:            <%= ENV['SLACK_TOKEN'] %>
+    team:             <%= ENV['SLACK_TEAM'] %>
+    channel:          <%= ENV['SLACK_CHANNEL'] %>
+    username:         <%= ENV['SLACK_USERNAME'] %>
+    icon_url:         <%= ENV['SLACK_ICON_URL'] %>
+    slash_cmd_token:  <%= ENV['SLASH_CMD_TOKEN'] %>
 
 development:
   <<: *defaults
@@ -89,9 +97,12 @@ development:
 test:
   <<: *defaults
   domain: people.test
-  hipchat:
-    active: false
-    api_token: 1234567890
+  features:
+    teams: true
+    positions: true
+    hipchat:
+      active: false
+      api_token: 1234567890
   slack:
     active: true
     token: 123
