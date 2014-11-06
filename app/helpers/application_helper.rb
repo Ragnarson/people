@@ -49,6 +49,13 @@ module ApplicationHelper
     AppConfig.features.positions
   end
 
+  def available_users_dates
+  [
+    ['Now',Time.now],['3 weeks',21.days.from_now],
+    ['1 month',1.month.from_now],['2 months',2.months.from_now]
+  ]
+  end
+
   private
 
   def icon_generator(name, icon_class, options = {})

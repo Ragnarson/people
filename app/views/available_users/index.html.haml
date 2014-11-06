@@ -2,6 +2,11 @@
   %ul.nav.nav-tabs
     %li.box__tab.active= link_to 'Table view', '#table_view', data: { toggle: 'tab' }
     %li.box__tab= link_to 'Cards view', '#cards_view', data: { toggle: 'tab' }
+  .filter
+    = simple_form_for :available, url: available_path do |f|
+      = f.input :date, label: false, wrapper_html: {class: 'form-inline'} do
+        = f.input :date, collection: available_users_dates, include_blank: false, label: false
+        = f.button :submit, 'Filter', class: 'btn-success'
   .tab-content
     .tab-pane#cards_view
       - roles.each do |role|
@@ -9,35 +14,36 @@
           .col-md-12
             %h3= role.name.capitalize
           .col-md-12
-            = "no candidates" if role.users.blank?
-            - role.users.each do |user|
-              .row
-                .col-md-3
-                  .user-card
-                    .avatar
-                      = user.gravatar_image(size: 100)
-                    .name
-                      = link_to profile_link user
-                    .available_since
-                      available since:
-                      #{user.availability.present? ? user.availability.to_date : "since now"}
-                    .hours
-                      hours: #{user.employment}h
-                    .link_to_cv
-                      = link_to 'link to profile pdf', '#'
-                    .last_projects
-                      last projects:
-                      %ul
-                        - user.memberships.each do |p|
-                          %li= link_to p.project_name, project_path(p.project)
-                    - if user.has_potential_projects?
-                      .potential_projects
-                        potential projects:
+            = 'no candidates' if role.users.blank?
+            - users.each do |user|
+              - if user.role?(role)
+                .row
+                  .col-md-3
+                    .user-card
+                      .avatar
+                        = user.gravatar_image(size: 100)
+                      .name
+                        = link_to profile_link user
+                      .available_since
+                        available since:
+                        #{user.availability.present? ? user.availability.to_date : "since now"}
+                      .hours
+                        hours: #{user.employment}h
+                      .link_to_cv
+                        = link_to 'link to profile pdf', '#'
+                      .last_projects
+                        last projects:
                         %ul
-                          - user.potential_memberships.each do |p|
-                            %li
-                              %span{ rel: 'tooltip', title: p.potential_start, data: { placement: 'right' } }
-                                = link_to p.project.name, project_path(p.project)
+                          - user.memberships.each do |p|
+                            %li= link_to p.project_name, project_path(p.project)
+                      - if user.has_potential_projects?
+                        .potential_projects
+                          potential projects:
+                          %ul
+                            - user.potential_memberships.each do |p|
+                              %li
+                                %span{ rel: 'tooltip', title: p.potential_start, data: { placement: 'right' } }
+                                  = link_to p.project.name, project_path(p.project)
                     .current_project
                       - if user.current_project.present?
                         current project:

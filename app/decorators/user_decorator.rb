@@ -61,4 +61,8 @@ class UserDecorator < Draper::Decorator
     ph = phone.present? ? phone : 'No phone'
     name + "\n" + ph + "\n" + email + "\n" + sk + "\n" + pr
   end
+
+  def role?(value)
+    role == value
+  end
 end
