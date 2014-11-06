@@ -9,7 +9,7 @@ class AvailableUsersController < ApplicationController
 
   def available_users
     @roles = Role.technical.to_a
-    User.active.available.roles(@roles)
+    date = params[:available].nil? ? Time.now : params[:available][:date]
+    User.filter_by(date).active.roles(@roles)
   end
-
 end

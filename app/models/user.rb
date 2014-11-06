@@ -7,6 +7,7 @@ class User
 
   include Mongoid::Timestamps
   include Mongoid::Paranoia
+  extend CheckAvailability
 
   field :encrypted_password
   field :sign_in_count, type: Integer, default: 0
@@ -65,6 +66,10 @@ class User
     ContractType.where(name: contract_type).first.try(:users)
   }
   scope :without_team, -> { where(team: nil) }
+  scope :filter_by, -> (date) {
+    user_ids = all.select { |obj| available_at?(obj, date.to_date) }.map(&:id)
+    where(:id.in => user_ids)
+  }
 
   before_save :end_memberships
   before_update :save_team_join_time

@@ -26,7 +26,7 @@ Hrguru::Application.routes.draw do
   end
 
   resources :users, only: [:index, :show, :update]
-  resources :available_users, only: [:index], path: "available"
+  resources :available_users, only: [:index], path: 'available'
   resources :projects
   resources :memberships, except: [:show]
   resources :teams
@@ -57,4 +57,5 @@ Hrguru::Application.routes.draw do
   end
   mount Flip::Engine => "/features"
 
+  post '/available' => 'available_users#index'
 end

@@ -57,4 +57,8 @@ class UserDecorator < Draper::Decorator
   def last_membership_end_date
     last_membership.try(:ends_at)
   end
+
+  def role?(value)
+    role == value
+  end
 end
