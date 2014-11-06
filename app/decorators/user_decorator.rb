@@ -70,4 +70,8 @@ class UserDecorator < Draper::Decorator
   def phone_number
     @phone_number ||= phone.presence || 'No phone'
   end
+
+  def role?(value)
+    role == value
+  end
 end
