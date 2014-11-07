@@ -9,7 +9,10 @@ module SlashCommands
                                                 available: /available/ }
   def execute(command, send_to)
     COMMANDS_MATCHERS.each do |type, regex|
-      self.send(type, command, send_to) if command =~ regex
+      if command =~ regex
+        self.send(type, command, send_to)
+        SLACK_LOGGER.info("Command: #{type} has been called.")
+      end
     end
   end
 

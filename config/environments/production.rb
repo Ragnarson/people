@@ -1,3 +1,5 @@
+require 'slack_logger'
+
 Hrguru::Application.configure do
 
   config.cache_classes = true

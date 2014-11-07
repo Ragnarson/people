@@ -12,15 +12,18 @@ module SlackNotificationsCallbackSupport
 
   def create_msg
     SLACK.send(self.class.name.downcase, self, 'added')
+    SLACK_LOGGER.info("Create notification for: #{self.class.name} has been sent.")
   end
 
   def update_msg
     if self.changed?
       SLACK.send(self.class.name.downcase, self, 'updated')
+      SLACK_LOGGER.info("Update notification for: #{self.class.name} has been sent.")
     end
   end
 
   def destroy_msg
     SLACK.send(self.class.name.downcase, self, 'removed')
+    SLACK_LOGGER.info("Destroy notification for: #{self.class.name} has been sent.")
   end
 end
