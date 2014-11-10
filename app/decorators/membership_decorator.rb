@@ -2,6 +2,7 @@ class MembershipDecorator < Draper::Decorator
   delegate_all
   decorates_association :user
   decorates_association :role
+  decorates_association :project
 
   def user_name
     user.present? ? user.name : '---'
