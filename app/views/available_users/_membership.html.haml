@@ -1,5 +1,5 @@
 .inline.project
-  - if membership.booked == true
+  - if membership.booked && membership.ends_at
     = link_to membership.project, project_path(membership.project)
     ( #{icon('calendar')} #{membership.decorate.ends_at.to_date} )
   - else
