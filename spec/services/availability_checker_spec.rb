@@ -6,6 +6,7 @@ describe AvailabilityChecker do
   let(:role) { create(:role, technical: true) }
   let(:project) { create(:project) }
   let(:internal_project) { create(:project, internal: true, potential: false) }
+  let(:potential_project) { create(:project, potential: true, internal: false) }
   let(:project_without_end_date) { create(:project, end_at: nil) }
   let(:project_ending) { create(:project, end_at: 27.days.from_now) }
   let(:project_ending_in_more_than_month) { create(:project, end_at: 40.days.from_now) }
@@ -143,6 +144,17 @@ describe AvailabilityChecker do
       vacation = { starts_at: Time.now-14.days, ends_at: Time.now-7.days }
       before do
         user.build_vacation(vacation)
+        subject.run!
+      end
+
+      it "changes user availability to true" do
+        expect(user.available).to be_true
+      end
+    end
+
+    context "when user has potential project" do
+      before do
+        create(:membership, ends_at: 1.month.from_now, user: user, project: potential_project)
         subject.run!
       end
 

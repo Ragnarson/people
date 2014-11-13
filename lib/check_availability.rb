@@ -3,7 +3,7 @@ module CheckAvailability
   def available_at?(user, date)
     assign_user(user)
     bilable_count = billable_memberships_count
-    (bilable_count == 0 || bilable_count <= finishing_work_count(date)) && !on_vacation_at?(date) && (internal_projects_count == 0)
+    (bilable_count == 0 || bilable_count <= finishing_work_count(date)) && !on_vacation_at?(date) && (internal_projects_count == 0) && potential_projects_count == 0
   end
 
   private
@@ -20,6 +20,10 @@ module CheckAvailability
 
   def internal_projects_count
     @user.current_memberships.map(&:project).select{|p| p.internal == true}.count
+  end
+
+  def potential_projects_count
+    @user.current_memberships.map(&:project).select{|p| p.potential == true}.count
   end
 
   def billable_memberships_count
