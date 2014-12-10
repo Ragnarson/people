@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SlackNotification do
-  subject { Hrguru::Application.config.slack }
+  subject { SLACK }
 
   let(:user) { create(:user, first_name: 'Tony', last_name: 'Montana') }
   let(:sec_user) { create(:user, first_name: 'John', last_name: 'Doe') }
@@ -17,25 +17,25 @@ describe SlackNotification do
 
         it 'sends notification' do
           expect(subject).to receive(:project_checker).with(project, 'started')
-          SlackNotification.new(project).notify
+          described_class.new(project).notify
         end
       end
 
       context 'started tomorrow' do
-        before { project.kickoff = Date.today+1 }
+        before { project.kickoff = Date.today + 1 }
 
         it 'sends notification' do
           expect(subject).to receive(:project_checker).with(project, 'started')
-          SlackNotification.new(project).notify
+          described_class.new(project).notify
         end
       end
 
       context 'started an other day' do
-        before { project.kickoff = Date.today+3 }
+        before { project.kickoff = Date.today + 3 }
 
         it 'sends notification' do
           expect(subject).not_to receive(:project_checker).with(project, 'started')
-          SlackNotification.new(project).notify
+          described_class.new(project).notify
         end
       end
 
@@ -44,25 +44,25 @@ describe SlackNotification do
 
         it 'sends notification' do
           expect(subject).to receive(:project_checker).with(project, 'finished')
-          SlackNotification.new(project).notify
+          described_class.new(project).notify
         end
       end
 
       context 'finished tomorrow' do
-        before { project.end_at = Date.today+1 }
+        before { project.end_at = Date.today + 1 }
 
         it 'sends notification' do
           expect(subject).to receive(:project_checker).with(project, 'finished')
-          SlackNotification.new(project).notify
+          described_class.new(project).notify
         end
       end
 
       context 'finished an other day' do
-        before { project.end_at = Date.today+3 }
+        before { project.end_at = Date.today + 3 }
 
         it 'sends notification' do
           expect(subject).not_to receive(:project_checker).with(project, 'finished')
-          SlackNotification.new(project).notify
+          described_class.new(project).notify
         end
       end
     end
@@ -77,7 +77,7 @@ describe SlackNotification do
         it 'sends notification' do
           expect(subject).to receive(:member_checker).with(project.name, member, 'start')
           expect(subject).not_to receive(:member_checker).with(project.name, sec_member, 'start')
-          SlackNotification.new(project).notify
+          described_class.new(project).notify
         end
       end
 
@@ -90,7 +90,7 @@ describe SlackNotification do
         it 'sends notification' do
           expect(subject).to receive(:member_checker).with(project.name, member, 'start')
           expect(subject).not_to receive(:member_checker).with(project.name, sec_member, 'start')
-          SlackNotification.new(project).notify
+          described_class.new(project).notify
         end
       end
 
@@ -103,7 +103,7 @@ describe SlackNotification do
         it 'sends notification' do
           expect(subject).not_to receive(:member_checker).with(project.name, member, 'start')
           expect(subject).not_to receive(:member_checker).with(project.name, sec_member, 'start')
-          SlackNotification.new(project).notify
+          described_class.new(project).notify
         end
       end
 
@@ -116,7 +116,7 @@ describe SlackNotification do
         it 'sends notification' do
           expect(subject).to receive(:member_checker).with(project.name, member, 'finish')
           expect(subject).not_to receive(:member_checker).with(project.name, sec_member, 'finish')
-          SlackNotification.new(project).notify
+          described_class.new(project).notify
         end
       end
 
@@ -129,7 +129,7 @@ describe SlackNotification do
         it 'sends notification' do
           expect(subject).to receive(:member_checker).with(project.name, member, 'finish')
           expect(subject).not_to receive(:member_checker).with(project.name, sec_member, 'finish')
-          SlackNotification.new(project).notify
+          described_class.new(project).notify
         end
       end
 
@@ -142,7 +142,7 @@ describe SlackNotification do
         it 'sends notification' do
           expect(subject).not_to receive(:member_checker).with(project.name, member, 'finish')
           expect(subject).not_to receive(:member_checker).with(project.name, sec_member, 'finish')
-          SlackNotification.new(project).notify
+          described_class.new(project).notify
         end
       end
     end

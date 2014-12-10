@@ -14,7 +14,7 @@
       - projects.each do |project|
         %tr
           %td= link_to project.name, project
-          %td= project.decorate.starts
+          %td= project.decorate.kicks_off_at
           %td= project.end_at.to_date
           %td
             - project.memberships.unfinished.each do |m|

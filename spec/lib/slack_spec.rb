@@ -2,13 +2,13 @@ require 'spec_helper'
 require 'slack'
 
 describe Slack do
-  subject { Hrguru::Application.config.slack }
+  subject { SLACK }
 
   let(:user) { create(:user, first_name: 'Tony', last_name: 'Montana') }
   let(:member) { create(:membership, user_id: user.id) }
   let(:vacation) { create(:vacation, user_id: user.id) }
   let!(:project) { create(:project, name: 'Project', slug: 'slug') }
-  let(:team) { build(:team)}
+  let(:team) { build(:team) }
   before { project.memberships = [member] }
 
   describe '#slack_project' do
@@ -21,7 +21,7 @@ describe Slack do
 
         it 'sends notification' do
           expect(subject.client).to receive(:notify).with(
-            "`Project` has been `added`.")
+            "Project: `Project` has been `added`.")
           subject.project(project, 'added')
         end
       end
@@ -34,7 +34,7 @@ describe Slack do
 
         it 'sends notification' do
           expect(subject.client).to receive(:notify).with(
-            "`Project` has been `added`. Kickoff: `#{Date.today}`.")
+            "Project: `Project` has been `added`. Kickoff: `#{Date.today}`.")
           subject.project(project, 'added')
         end
       end
@@ -47,7 +47,7 @@ describe Slack do
 
         it 'sends notification' do
           expect(subject.client).to receive(:notify).with(
-            "`Project` has been `added`. End at: `#{Date.today}`.")
+            "Project: `Project` has been `added`. End at: `#{Date.today}`.")
           subject.project(project, 'added')
         end
       end
@@ -60,7 +60,8 @@ describe Slack do
 
         it 'sends notification' do
           expect(subject.client).to receive(:notify).with(
-            "`Project` has been `added`. Kickoff: `#{Date.today}`, End at: `#{Date.today+7}`.")
+            "Project: `Project` has been `added`. Kickoff: `#{Date.today}`. "\
+            "End at: `#{Date.today + 7}`.")
           subject.project(project, 'added')
         end
       end
@@ -116,7 +117,8 @@ describe Slack do
 
         it 'sends notification' do
           expect(subject.client).to receive(:notify).with(
-            "Potential project: `Project` has been `added`. Kickoff: `#{Date.today}`, End at: `#{Date.today+7}`.")
+            "Potential project: `Project` has been `added`. Kickoff: `#{Date.today}`. "\
+            "End at: `#{Date.today + 7}`.")
           subject.project(project, 'added')
         end
       end
@@ -188,9 +190,9 @@ describe Slack do
         end
 
         it 'sends notification' do
-           expect(subject.client).to receive(:notify).with(
-            "`Project` has been `updated`.")
-           subject.project(project, 'updated')
+          expect(subject.client).to receive(:notify).with(
+            "Project: `Project` has been `updated`.")
+          subject.project(project, 'updated')
         end
       end
 
@@ -202,7 +204,7 @@ describe Slack do
 
         it 'sends notification' do
           expect(subject.client).to receive(:notify).with(
-            "`Project` has been `updated`. Kickoff: `#{Date.today}`.")
+            "Project: `Project` has been `updated`. Kickoff: `#{Date.today}`.")
           subject.project(project, 'updated')
         end
       end
@@ -215,7 +217,7 @@ describe Slack do
 
         it 'sends notification' do
           expect(subject.client).to receive(:notify).with(
-            "`Project` has been `updated`. End at: `#{Date.today}`.")
+            "Project: `Project` has been `updated`. End at: `#{Date.today}`.")
           subject.project(project, 'updated')
         end
       end
@@ -228,7 +230,8 @@ describe Slack do
 
         it 'sends notification' do
           expect(subject.client).to receive(:notify).with(
-            "`Project` has been `updated`. Kickoff: `#{Date.today}`, End at: `#{Date.today+7}`.")
+            "Project: `Project` has been `updated`. Kickoff: `#{Date.today}`. "\
+            "End at: `#{Date.today + 7}`.")
           subject.project(project, 'updated')
         end
       end
@@ -284,7 +287,8 @@ describe Slack do
 
         it 'sends notification' do
           expect(subject.client).to receive(:notify).with(
-            "Potential project: `Project` has been `updated`. Kickoff: `#{Date.today}`, End at: `#{Date.today+7}`.")
+            "Potential project: `Project` has been `updated`. Kickoff: `#{Date.today}`. "\
+            "End at: `#{Date.today + 7}`.")
           subject.project(project, 'updated')
         end
       end
@@ -356,8 +360,8 @@ describe Slack do
         end
 
         it 'sends notification' do
-           expect(subject.client).to receive(:notify).with(
-            "`Project` has been `removed`.")
+          expect(subject.client).to receive(:notify).with(
+            "Project: `Project` has been `removed`.")
           subject.project(project, 'removed')
         end
       end
@@ -370,7 +374,7 @@ describe Slack do
 
         it 'sends notification' do
           expect(subject.client).to receive(:notify).with(
-            "`Project` has been `removed`. Kickoff: `#{Date.today}`.")
+            "Project: `Project` has been `removed`. Kickoff: `#{Date.today}`.")
           subject.project(project, 'removed')
         end
       end
@@ -383,7 +387,7 @@ describe Slack do
 
         it 'sends notification' do
           expect(subject.client).to receive(:notify).with(
-            "`Project` has been `removed`. End at: `#{Date.today}`.")
+            "Project: `Project` has been `removed`. End at: `#{Date.today}`.")
           subject.project(project, 'removed')
         end
       end
@@ -396,7 +400,8 @@ describe Slack do
 
         it 'sends notification' do
           expect(subject.client).to receive(:notify).with(
-            "`Project` has been `removed`. Kickoff: `#{Date.today}`, End at: `#{Date.today+7}`.")
+            "Project: `Project` has been `removed`. Kickoff: `#{Date.today}`. "\
+            "End at: `#{Date.today + 7}`.")
           subject.project(project, 'removed')
         end
       end
@@ -452,7 +457,8 @@ describe Slack do
 
         it 'sends notification' do
           expect(subject.client).to receive(:notify).with(
-            "Potential project: `Project` has been `removed`. Kickoff: `#{Date.today}`, End at: `#{Date.today+7}`.")
+            "Potential project: `Project` has been `removed`. Kickoff: `#{Date.today}`. "\
+            "End at: `#{Date.today + 7}`.")
           subject.project(project, 'removed')
         end
       end
@@ -541,7 +547,8 @@ describe Slack do
         context 'has been added' do
           it 'sends notification' do
             expect(subject.client).to receive(:notify).with(
-              "Vacation has been `added`. `Tony Montana`: `#{Date.today-1.day}... #{Date.today+6.days}`.")
+              "Vacation has been `added`. `Tony Montana`: "\
+              "`#{Date.today - 1.day}... #{Date.today + 6.days}`.")
             subject.vacation(vacation, 'added')
           end
         end
@@ -549,7 +556,8 @@ describe Slack do
         context 'has been updated' do
           it 'sends notification' do
             expect(subject.client).to receive(:notify).with(
-              "Vacation has been `updated`. `Tony Montana`: `#{Date.today-1.day}... #{Date.today+6.days}`.")
+              "Vacation has been `updated`. `Tony Montana`: "\
+              "`#{Date.today - 1.day}... #{Date.today + 6.days}`.")
             subject.vacation(vacation, 'updated')
           end
         end
@@ -587,7 +595,7 @@ describe Slack do
     describe '#slack_project_checker' do
       context 'when method has been called' do
         context 'with finished action' do
-        before { project.end_at = Date.today }
+          before { project.end_at = Date.today }
 
           it 'sends notification' do
             expect(subject.client).to receive(:notify).with(
@@ -598,7 +606,7 @@ describe Slack do
 
         context 'with started action' do
           context 'when project is not archived' do
-          before { project.kickoff = Date.today }
+            before { project.kickoff = Date.today }
 
             it 'sends notification' do
               expect(subject.client).to receive(:notify).with(
@@ -613,7 +621,7 @@ describe Slack do
     describe '#slack_member_checker' do
       context 'when method has been called' do
         context 'with finish action' do
-        before { member.ends_at = Date.today }
+          before { member.ends_at = Date.today }
 
           it 'sends notification' do
             expect(subject.client).to receive(:notify).with(
@@ -623,7 +631,7 @@ describe Slack do
         end
 
         context 'with start action' do
-        before { member.starts_at = Date.today }
+          before { member.starts_at = Date.today }
 
           it 'sends notification' do
             expect(subject.client).to receive(:notify).with(

@@ -52,7 +52,9 @@ Hrguru::Application.routes.draw do
     get '/css', to: 'pages#css'
     get '/components', to: 'pages#components'
   end
-  get 'slack', :controller => 'slack_out', :action => 'check_command'
   post '/available' => 'available_users#index'
   post '/filter_ending_projects' => 'ending_projects#index'
+
+  get "slack", controller: "slack_out", action: "check_command"
+
 end
