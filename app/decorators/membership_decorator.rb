@@ -23,6 +23,11 @@ class MembershipDecorator < Draper::Decorator
     h.raw range
   end
 
+  def ending_date
+    ends_at.present? ? date = "#{ends_at.to_date}" : date = "-"
+    h.raw "#{h.icon('calendar')} " << date
+  end
+
   def project_name
     project.name
   end

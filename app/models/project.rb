@@ -46,6 +46,7 @@ class Project
   scope :ending_or_starting_in, lambda { |days|
     any_of(ending_in(days).selector, starting_in(days).selector)
   }
+  scope :filter_by, ->(date) { between(end_at: Time.now..date) }
 
   track_history on: [:archived, :potential], version_field: :version, track_create: true, track_update: true
 

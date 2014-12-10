@@ -1,0 +1,14 @@
+body.ending_projects {
+  &.index {
+    #main-container{
+      width: 100%;
+    }
+
+    .filter {
+      padding-top: 15px;
+      select {
+        width: 150px;
+      }
+    }
+  }
+}

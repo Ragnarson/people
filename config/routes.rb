@@ -27,6 +27,7 @@ Hrguru::Application.routes.draw do
 
   resources :users, only: [:index, :show, :update]
   resources :available_users, only: [:index], path: 'available'
+  resources :ending_projects, only: [:index], path: 'ending_projects'
   resources :projects
   resources :memberships, except: [:show]
   resources :teams
@@ -53,4 +54,5 @@ Hrguru::Application.routes.draw do
   end
   get 'slack', :controller => 'slack_out', :action => 'check_command'
   post '/available' => 'available_users#index'
+  post '/filter_ending_projects' => 'ending_projects#index'
 end
