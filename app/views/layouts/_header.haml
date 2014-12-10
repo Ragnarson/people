@@ -13,6 +13,7 @@
         %ul.nav.navbar-nav
           %li{ class: menu_class('users') }= link_to "Users", users_path
           %li{ class: menu_class('available_users') }= link_to "Available people", available_users_path
+          %li{ class: menu_class('ending_projects') }= link_to "Ending projects", ending_projects_path
           %li{ class: menu_class('teams') }= link_to "Teams", teams_path if active_teams?
           %li{ class: menu_class('vacations') }= link_to "Vacations", vacations_path
           - if current_user.admin?

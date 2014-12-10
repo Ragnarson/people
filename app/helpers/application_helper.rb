@@ -50,10 +50,17 @@ module ApplicationHelper
   end
 
   def available_users_dates
-  [
-    ['Now',Time.now],['3 weeks',21.days.from_now],
-    ['1 month',1.month.from_now],['2 months',2.months.from_now]
-  ]
+    [
+      ['Now', Time.now], ['3 weeks', 21.days.from_now],
+      ['1 month', 1.month.from_now], ['2 months', 2.months.from_now]
+    ]
+  end
+
+  def ending_projects_dates
+    [
+      ['Select range', 2.weeks.from_now], ['2 weeks', 2.weeks.from_now],
+      ['1 month', 1.month.from_now], ['2 months', 2.months.from_now]
+    ]
   end
 
   private
