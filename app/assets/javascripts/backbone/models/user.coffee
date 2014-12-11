@@ -56,8 +56,9 @@ class Hrguru.Models.User extends Backbone.Model
   visibleByAbilities: (abilities) ->
     return true if abilities.length < 1
     return false unless @get('abilities')?
-    myAbilities = @myAbilities()
-    (_.difference myAbilities, abilities).length < myAbilities.length
+    if @isActive()
+      myAbilities = @myAbilities()
+      (_.difference myAbilities, abilities).length < myAbilities.length
 
   myProjects: ->
     _.map @get("projects"), (p) -> p.project._id
