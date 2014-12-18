@@ -38,8 +38,10 @@ Hrguru::Application.routes.draw do
   resources :positions, except: [:show]
   resources :abilities
   resources :users do
-    resource :vacation do
-      post 'import'
+    resources :vacations do
+      member do
+        post 'import'
+      end
     end
   end
   get '/vacations', to: 'vacations#index'

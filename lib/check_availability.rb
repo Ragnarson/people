@@ -13,9 +13,11 @@ module CheckAvailability
   end
 
   def on_vacation_at?(date)
-    if @user.vacation.present?
-      (@user.vacation.starts_at.to_date <= date) && (@user.vacation.ends_at.to_date >= date)
+    return unless @user.vacations.empty?
+    on_vacation = @user.vacations.collect do |vacation|
+      (vacation.starts_at.to_date <= date) && (vacation.ends_at.to_date >= date)
     end
+    on_vacation.include? true
   end
 
   def internal_projects_count

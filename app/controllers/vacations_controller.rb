@@ -3,23 +3,24 @@ class VacationsController < ApplicationController
   include Calendar
 
   expose_decorated(:user)
-  expose(:vacations) { Vacation.all }
-  expose(:vacation) { user.vacation }
+  expose(:vacation)
+  expose(:all_vacations) { Vacation.all }
+  expose(:vacations) { user.vacations }
 
   before_filter :authenticate_admin!, only: [:update], unless: -> { current_user? }
 
   def index
-    @users = User.by_vacation_date
+    @users = User.all.decorate
   end
 
   def new
-    user.build_vacation
+    user.vacations.build
   end
 
   def create
-    vacation = user.build_vacation(vacation_params)
+    vacation = user.vacations.build(vacation_params)
     if vacation.save
-      export_vacation(user)
+      export_vacation(vacation)
       respond_on_success vacations_path
     else
       respond_on_failure vacation.errors
@@ -27,8 +28,9 @@ class VacationsController < ApplicationController
   end
 
   def update
+    vacation = Vacation.find(params[:id])
     if vacation.update(vacation_params)
-      update_vacation(user) if vacation.eventid.present?
+      update_vacation(vacation) if vacation.eventid.present?
       respond_on_success vacations_path
     else
       respond_on_failure vacation.errors
@@ -36,8 +38,9 @@ class VacationsController < ApplicationController
   end
 
   def destroy
+    vacation = Vacation.find(params[:id])
     if vacation.destroy
-      delete_vacation(user) if vacation.eventid.present?
+      delete_vacation(vacation) if vacation.eventid.present?
       respond_on_success vacations_path
     else
       respond_on_failure vacation.errors
@@ -52,6 +55,6 @@ class VacationsController < ApplicationController
   private
 
   def vacation_params
-    params.require(:vacation).permit(:starts_at, :ends_at, :user_id)
+    params.require(:vacation).permit(:starts_at, :ends_at, :user_id, :id)
   end
 end

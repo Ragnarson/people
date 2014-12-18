@@ -23,6 +23,8 @@ describe Calendar do
   end
 
   describe '#export_vacation' do
+    let(:vacation) { build(:vacation, user: user, starts_at: "2014-09-02", ends_at: "2014-09-09") }
+
     before do
       stub_request(:post, "https://www.googleapis.com/calendar/v3/calendars/1/events").
         with(:body => "{\"summary\":\"John Doe - vacation\",\"start\":{\"date\":\"2014-09-02\"},\"end\":{\"date\":\"2014-09-10\"}}",
@@ -30,19 +32,17 @@ describe Calendar do
           'Cache-Control'=>'no-store', 'Content-Type'=>'application/json'}).
         to_return(:status => 200, :body => File.read(File.join("spec", "support", "calendar", "result.txt")),
           :headers => { 'Content-Type' => 'application/json' })
-      user.build_vacation
-      user.vacation.starts_at = "2014-09-02"
-      user.vacation.ends_at = "2014-09-09"
-      user.vacation.save
-      export_vacation(user)
+      export_vacation(vacation)
     end
 
     it 'exports new event to Google Calendar' do
-      expect(user.vacation.eventid).to eq(1)
+      expect(vacation.eventid).to eq(1)
     end
   end
 
   describe '#update_vacation' do
+    let(:vacation) { build(:vacation, user: user, starts_at: "2014-09-02", ends_at: "2014-09-09", eventid: 1) }
+
     before do
       stub_request(:get, "https://www.googleapis.com/calendar/v3/calendars/1/events/1").
         with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
@@ -57,20 +57,18 @@ describe Calendar do
                 'Authorization'=>'Bearer 123', 'Cache-Control'=>'no-store',
                 'Content-Type'=>'application/json'}).
         to_return(:status => 200, :body => "", :headers => {})
-      user.build_vacation
-      user.vacation.starts_at = "2014-09-02"
-      user.vacation.ends_at = "2014-09-09"
-      user.vacation.eventid = 1
-      user.vacation.save
-      update_vacation(user)
+      update_vacation(vacation)
     end
 
     it 'exports new event to Google Calendar' do
-      expect(user.vacation.starts_at.to_date).to eq(("2014-09-02").to_date)
+      expect(vacation.starts_at.to_date).to eq(("2014-09-02").to_date)
     end
   end
 
   describe '#import_vacation' do
+    let(:second_vacation) { create(:vacation, user: user) }
+    let(:vacation) { build(:vacation, user: user, starts_at: "2014-09-02", ends_at: "2014-09-09", eventid: 1) }
+
     before do
       stub_request(:get, "https://www.googleapis.com/calendar/v3/calendars/1/events").
         with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
@@ -81,32 +79,18 @@ describe Calendar do
     end
 
     context 'when user has vacation in database' do
-      before do
-        user.build_vacation
-        user.vacation.starts_at = "2014-09-02"
-        user.vacation.ends_at = "2014-09-09"
-        user.vacation.eventid = 1
-        user.vacation.save
-        import_vacation(user)
-      end
+      before { second_vacation }
 
-      it 'does not save imported event' do
-        expect(user.vacation.starts_at).to eq(("2014-09-02").to_date)
-        expect(user.vacation.ends_at).to eq(("2014-09-09").to_date)
+      it 'saves imported event' do
+        expect { import_vacation(vacation) }.to change(user.vacations, :count).by(1)
+        expect(user.vacations.count).to eq 2
       end
     end
 
     context 'when user does not have vacation in database yet' do
       context 'saves new imported event from Google Calendar' do
-        before do
-          import_vacation(user)
-          user.reload
-        end
-
         it 'if summary,dates and email are valid' do
-          expect(user.vacation.nil?).to be_false
-          expect(user.vacation.starts_at).to eq(("2015-03-02").to_date)
-          expect(user.vacation.ends_at).to eq(("2015-03-08").to_date)
+          expect { import_vacation(vacation) }.to change(user.vacations, :count).by(1)
         end
       end
 
@@ -118,15 +102,12 @@ describe Calendar do
               'Content-Type'=>'application/x-www-form-urlencoded'}).
             to_return(:status => 200, :body => File.read(File.join("spec", "support", "calendar", "invalid_import.txt")),
               :headers => { 'Content-Type' => 'application/json' })
-          import_vacation(user)
-          user.reload
         end
 
         it 'if summary, dates or email are not valid' do
-          expect(user.vacation.nil?).to be_true
+          expect { import_vacation(vacation) }.not_to change(user.vacations, :count)
         end
       end
     end
   end
 end
-

@@ -80,14 +80,15 @@
                 .clearfix
 
     .list-group
-      - if user.vacation.present?
+      - if user.vacations.present?
         .list-group-item
-          %h4.list-group-item-heading= 'Vacation'
+          %h4.list-group-item-heading= 'Vacations'
           .list-group
-            .membership__item
-              = link_to edit_user_vacation_path(user), class: 'list-group-item' do
-                %i.fa.fa-calendar
-                = user.vacation.date_range
-              = link_to 'delete', user_vacation_path(user), method: :delete, data: { confirm: I18n.t('confirm_question') }, class: 'btn btn-xs btn-danger pull-right'
-              .clearfix
+            - user.vacations.each do |vacation|
+              .membership__item
+                = link_to edit_user_vacation_path(user, vacation), class: 'list-group-item' do
+                  %i.fa.fa-calendar
+                  = vacation.date_range
+                = link_to 'delete', user_vacation_path(user, vacation), method: :delete, data: { confirm: I18n.t('confirm_question') }, class: 'btn btn-xs btn-danger pull-right'
+                .clearfix
   .timeline

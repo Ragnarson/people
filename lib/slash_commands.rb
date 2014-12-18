@@ -81,10 +81,12 @@ module SlashCommands
   end
 
   def vacation_notification(user, send_to)
-    vacation = Vacation.where(user_id: user.id).first if user
-    if vacation.present?
-      SLACK.client.notify(
-        "Vacation: `#{user.name}` - `#{vacation.date_range}`.", "#{send_to}")
+    vacations = user.vacations if user
+    if vacations.present?
+      vacations.each do |vacation|
+        SLACK.client.notify(
+          "Vacation: `#{user.name}` - `#{vacation.date_range}`.", "#{send_to}")
+      end
     else
       not_found('Vacation', send_to)
     end
