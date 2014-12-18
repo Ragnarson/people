@@ -2,18 +2,17 @@ require 'spec_helper'
 require 'slack_notifications_callback_support'
 
 describe SlackNotificationsCallbackSupport do
-  SLACK = Hrguru::Application.config.slack.client
   let!(:user) { create(:user) }
   let(:member) { create(:membership, user_id: user.id) }
   let!(:project) { create(:project) }
-  let(:team) { create(:team)}
+  let(:team) { create(:team) }
   let(:vacation) { create(:vacation) }
 
   describe '#create' do
     context 'when user' do
       context 'creates a new project' do
         it 'calls after_create' do
-          p = Project.new
+          p = Project.new(name: 'First Project')
           expect(p).to receive(:create_msg)
           p.save(validate: false)
         end
@@ -113,12 +112,12 @@ describe SlackNotificationsCallbackSupport do
     before do
       project.name = 'New'
       project.kickoff = Date.today
-      project.end_at = Date.today+7
+      project.end_at = Date.today + 7
     end
 
     it 'sends slack notification' do
-      expect(SLACK).to receive(:notify).with(
-        "`New` has been `added`. Kickoff: `#{Date.today}`, End at: `#{Date.today+7}`.")
+      expect(SLACK.client).to receive(:notify).with(
+        "Project: `New` has been `added`. Kickoff: `#{Date.today}`. End at: `#{Date.today + 7}`.")
       project.send(:create_msg)
     end
   end
@@ -128,12 +127,13 @@ describe SlackNotificationsCallbackSupport do
       before do
         project.name = 'Old'
         project.kickoff = Date.today
-        project.end_at = Date.today+7
+        project.end_at = Date.today + 7
       end
 
       it 'sends slack notification' do
-        expect(SLACK).to receive(:notify).with(
-          "`Old` has been `updated`. Kickoff: `#{Date.today}`, End at: `#{Date.today+7}`.")
+        expect(SLACK.client).to receive(:notify).with(
+          "Project: `Old` has been `updated`. Kickoff: `#{Date.today}`. "\
+          "End at: `#{Date.today + 7}`.")
         project.send(:update_msg)
       end
     end
@@ -154,8 +154,8 @@ describe SlackNotificationsCallbackSupport do
     end
 
     it 'sends slack notification' do
-      expect(SLACK).to receive(:notify).with(
-        "`Old` has been `removed`.")
+      expect(SLACK.client).to receive(:notify).with(
+        "Project: `Old` has been `removed`.")
       project.send(:destroy_msg)
     end
   end

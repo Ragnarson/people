@@ -64,4 +64,11 @@ class UserDecorator < Draper::Decorator
   def role?(value)
     role == value
   end
+
+  def contact_details
+    p = phone.presence ? "\nPhone: `#{phone}`" : ""
+    e = email.presence ? " \nEmail: `#{email}`" : ""
+    s = skype.presence ? " \nSkype: `#{skype}`" : ""
+    p + e + s
+  end
 end

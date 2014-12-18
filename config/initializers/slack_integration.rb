@@ -1,5 +1,3 @@
 require 'slack'
 
-if AppConfig.slack.active
-  Hrguru::Application.config.slack = Slack.new
-end
+SLACK = AppConfig.slack.active == true ? Slack.new : nil
