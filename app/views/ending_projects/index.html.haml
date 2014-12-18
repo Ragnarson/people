@@ -1,25 +1,32 @@
-.filter
-  = simple_form_for :ending, url: filter_ending_projects_path do |f|
-    = f.input :date, label: false, wrapper_html: {class: 'form-inline'} do
-      = f.input :date, collection: ending_projects_dates, include_blank: false, label: false
-      = f.button :submit, 'Filter', class: 'btn-success'
+- if memberships.present?
+  %table.table.table-striped.table-hover
+    %thead
+      %th Project
+      %th User
+      %th Ends at
+    %tbody
+      - memberships.each do |membership|
+        %tr
+          %td= link_to membership.project.name, membership.project
+          %td= profile_link membership.user.decorate
+          %td= membership.ends_at.to_date
+- else
+  %h2 No ending memberships
+
 - if projects.present?
   %table.table.table-striped.table-hover
     %thead
       %th Project
-      %th Kickoff
       %th Ends at
       %th Unfinished memberships
     %tbody
       - projects.each do |project|
         %tr
           %td= link_to project.name, project
-          %td= project.decorate.kicks_off_at
           %td= project.end_at.to_date
           %td
             - project.memberships.unfinished.each do |m|
               %li
                 = profile_link m.user.decorate
-                = m.decorate.ending_date
 - else
   %h2 No ending projects

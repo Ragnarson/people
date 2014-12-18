@@ -53,7 +53,6 @@ Hrguru::Application.routes.draw do
     get '/components', to: 'pages#components'
   end
   post '/available' => 'available_users#index'
-  post '/filter_ending_projects' => 'ending_projects#index'
 
   get "slack", controller: "slack_out", action: "check_command"
 

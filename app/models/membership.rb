@@ -48,6 +48,7 @@ class Membership
   scope :upcoming_changes, lambda { |days|
     any_of(leaving(days).selector, joining(days).selector)
   }
+  scope :filter_by, ->(date) { between(ends_at: Time.now..date) }
 
   %w(user project role).each do |model|
     original_model = "original_#{model}"
