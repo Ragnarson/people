@@ -35,7 +35,7 @@ class User
   has_many :memberships
   has_many :notes
   has_many :positions
-  has_one :vacation, inverse_of: :user
+  has_many :vacations, inverse_of: :user
   belongs_to :admin_role
   belongs_to :role
   belongs_to :contract_type
@@ -198,7 +198,7 @@ class User
   end
 
   def self.by_vacation_date
-    all.decorate.select { |u| u.vacation.present? }.sort_by { |u| u.vacation.starts_at }
+    all.select { |u| u.vacations.present? }.sort_by { |u| u.vacations.map(&:starts_at) }
   end
 
   def abilities_names

@@ -26,7 +26,7 @@ describe EndingProjectsController do
     end
 
     it 'displays proper number of projects' do
-      expect(controller.projects.count).to be 1
+      expect(controller.projects.count).to eq 1
     end
 
     it 'displays memberships names on view' do

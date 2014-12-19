@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe VacationCheckerJob do
   let(:checker) { VacationCheckerJob.new }
-  let!(:vacation) { create(:vacation, eventid: 1, ends_at: Date.today-1.day) }
+  let(:user) { create(:user) }
+  let!(:vacation) { create(:vacation, eventid: 1, ends_at: Date.today - 1.day, user: user) }
+
   before { AppConfig.stub(:calendar_id).and_return('1') }
 
   describe '#perform' do
@@ -14,7 +16,7 @@ describe VacationCheckerJob do
         to_return(:status => 200, :body => "", :headers => {})
     end
     it 'deletes expired vacation' do
-      expect{ checker.perform(vacation.id) }.to change(Vacation, :count).by(-1)
+      expect { checker.perform(vacation) }.to change(Vacation, :count).by(-1)
     end
   end
 end

@@ -1,4 +1,4 @@
-= simple_form_for [user, vacation], :url => user_vacation_path(user) do |f|
+= simple_form_for [user, vacation] do |f|
   .col-xs-9
     = f.input :starts_at, as: :date_picker, wrapper: :prepend, label_html: { class: 'input-group-addon' }
     = f.input :ends_at, as: :date_picker, wrapper: :prepend, label_html: { class: 'input-group-addon' }

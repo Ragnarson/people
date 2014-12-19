@@ -114,11 +114,8 @@ describe AvailabilityChecker do
     end
 
     context "when user is on vacation" do
-      let(:user) { build(:user) }
-      vacation = { starts_at: Time.now-1.day, ends_at: Time.now+7.days }
       before do
-        user.build_vacation(vacation)
-        subject.run!
+        build(:vacation, starts_at: Time.now - 1.day, ends_at: Time.now + 7.days, user: user)
       end
 
       it "changes user availability to false" do
@@ -127,10 +124,9 @@ describe AvailabilityChecker do
     end
 
     context "when user is before vacation" do
-      let(:user) { build(:user) }
-      vacation = { starts_at: Time.now+7.days, ends_at: Time.now+14.days }
       before do
-        user.build_vacation(vacation)
+        build(:vacation, starts_at: Time.now + 7.days, ends_at: Time.now + 14.days,
+          user: user)
         subject.run!
       end
 
@@ -140,10 +136,9 @@ describe AvailabilityChecker do
     end
 
     context "when user was on vacation" do
-      let(:user) { build(:user) }
-      vacation = { starts_at: Time.now-14.days, ends_at: Time.now-7.days }
       before do
-        user.build_vacation(vacation)
+        build(:vacation, starts_at: Time.now - 14.days, ends_at: Time.now - 7.days,
+          user: user)
         subject.run!
       end
 

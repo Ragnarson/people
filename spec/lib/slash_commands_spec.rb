@@ -151,15 +151,18 @@ describe SlashCommands do
 
   describe '#vacation' do
     context 'with valid parameter' do
-      before do
-        user.build_vacation
-        user.vacation.starts_at = Date.today
-        user.vacation.ends_at = Date.today + 7
-        user.vacation.save
-      end
+      let!(:vacation) { create(:vacation, starts_at: Date.today, ends_at: Date.today + 7, user: user) }
+      let(:second_vacation) { create(:vacation, user: user) }
+
       it 'sends notification' do
         expect(SLACK.client).to receive(:notify).with(
           "Vacation: `Tony Montana` - `#{Date.today}... #{Date.today + 7}`.", "@test")
+        subject.send(:vacation, 'vacation Tony Montana', '@test')
+      end
+
+      it 'sends notification for each vacation' do
+        second_vacation
+        expect(SLACK.client).to receive(:notify).twice
         subject.send(:vacation, 'vacation Tony Montana', '@test')
       end
     end
