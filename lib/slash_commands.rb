@@ -1,10 +1,10 @@
 module SlashCommands
   COMMANDS_MATCHERS = { project: /project/,
-                                                contact: /contact/,
-                                                team: /team/,
-                                                vacation: /vacation/,
-                                                member: /member/,
-                                                available: /available/ }
+                        contact: /contact/,
+                        team: /team/,
+                        vacation: /vacation/,
+                        member: /member/,
+                        available: /available/ }
   def execute(command, send_to)
     COMMANDS_MATCHERS.each do |type, regex|
       send(type, command, send_to) if command =~ regex && !SLACK.nil?

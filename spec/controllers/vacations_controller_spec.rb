@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe VacationsController do
-  let!(:user) { create(:user, first_name: 'John', last_name: 'Doe', email: 'johndoe@example.com') }
+  let!(:user) { create(:user, first_name: 'John', last_name: 'Doe',
+    email: 'johndoe@example.com') }
 
   before(:each) do
     AppConfig.stub(:calendar_id).and_return('1')
@@ -32,20 +33,12 @@ describe VacationsController do
   end
 
   describe '#create' do
-    before do
-      stub_request(:post, "https://www.googleapis.com/calendar/v3/calendars/1/events").
-        with(:body => "{\"summary\":\"John Doe - vacation\",\"start\":{\"date\":\"2014-09-02\"},\"end\":{\"date\":\"2014-09-11\"}}",
-          :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'Authorization'=>'Bearer 123', 'Cache-Control'=>'no-store',
-            'Content-Type'=>'application/json'}).
-        to_return(:status => 200, :body => File.read(File.join("spec", "support", "calendar", "result.txt")),
-          :headers => { 'Content-Type' => 'application/json' })
-    end
-
     context 'with valid attributes' do
       subject { attributes_for(:vacation, starts_at: "2014-09-02", ends_at: "2014-09-10", user: user) }
 
       it 'creates a new vacation' do
+        expect(controller).to receive(:export_vacation)
+
         expect{
          post :create, user_id: user.id, vacation: subject
         }.to change(Vacation, :count).by(1)
@@ -70,30 +63,12 @@ describe VacationsController do
 
   describe '#update' do
     let!(:vacation) { create(:vacation, starts_at: "2014-09-02", ends_at: "2014-09-09", user: user) }
-    before do
-      stub_request(:get, "https://www.googleapis.com/calendar/v3/calendars/1/events/").
-        with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=>'Bearer 123', 'Cache-Control'=>'no-store',
-          'Content-Type'=>'application/x-www-form-urlencoded',
-          'User-Agent'=>'calendar/1.0 google-api-ruby-client/0.6.4 Linux/3.2.0-4-amd64'}).
-         to_return(:status => 200, :body => File.read(File.join("spec", "support", "calendar", "result.txt")),
-          :headers => { 'Content-Type' => 'application/json' })
-
-      stub_request(:put, "https://www.googleapis.com/calendar/v3/calendars/1/events/").
-        with(:body => "{\"id\":1,\"start\":{\"date\":\"2014-09-02\"},\"end\":{\"date\":\"2014-09-11\"}}",
-          :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'Authorization'=>'Bearer 123', 'Cache-Control'=>'no-store',
-            'Content-Type'=>'application/json',
-            'User-Agent'=>'calendar/1.0 google-api-ruby-client/0.6.4 Linux/3.2.0-4-amd64'}).
-        to_return(:status => 200, :body => "", :headers => {})
-    end
 
     context 'with valid attributes' do
       it 'changes attributes of vacation' do
         put :update, user_id: vacation.user.id, id: vacation.id, vacation: attributes_for(:vacation, ends_at: "2014-09-10")
         vacation.reload
         expect(vacation.ends_at).to eq(("2014-09-10").to_date)
-
       end
     end
 
@@ -113,14 +88,6 @@ describe VacationsController do
 
   describe '#delete' do
     let!(:vacation) { create(:vacation, user: user) }
-    before do
-      stub_request(:delete, "https://www.googleapis.com/calendar/v3/calendars/1/events/").
-        with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=>'Bearer 123', 'Cache-Control'=>'no-store',
-          'Content-Type'=>'application/x-www-form-urlencoded',
-          'User-Agent'=>'calendar/1.0 google-api-ruby-client/0.6.4 Linux/3.2.0-4-amd64'}).
-        to_return(:status => 200, :body => "", :headers => {})
-    end
 
     it 'deletes the vacation' do
       expect(Vacation.count).to eq 1

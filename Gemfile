@@ -41,7 +41,6 @@ gem 'sass-rails', '~> 4.0.0'
 gem 'sass', '~> 3.3.14'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
-gem 'therubyracer'
 gem 'render_anywhere', require: false
 
 gem 'bootstrap-sass'
@@ -82,7 +81,6 @@ end
 
 group :development, :test do
   gem 'pry'
-  gem 'pry-debugger'
 end
 
 group :test do

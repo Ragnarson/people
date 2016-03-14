@@ -21,8 +21,8 @@ Spork.prefork do
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
   RSpec.configure do |config|
-    WebMock.disable_net_connect!(allow_localhost: true,
-                                 allow: [/rest/, /slack/, /codeclimate.com/])
+    WebMock.disable_net_connect!(allow_localhost: true)
+
     config.include FactoryGirl::Syntax::Methods
     config.include Mongoid::Matchers, type: :model
     config.include Devise::TestHelpers, type: :controller
