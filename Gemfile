@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby "2.0.0"
 
-gem 'rails', '4.0.3'
+gem 'rails', '~> 4.0.3'
 gem 'rollbar'
 gem 'google-analytics-rails'
 gem 'newrelic_rpm'
@@ -37,10 +37,10 @@ gem 'sucker_punch', '~> 1.0'
 gem 'hipchat'
 
 gem 'haml-rails'
-gem 'sass-rails', '~> 4.0.0'
-gem 'sass', '~> 3.3.14'
-gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.0.0'
+gem 'sass-rails' # , '~> 4.0.0'
+gem 'sass' #, '~> 3.3.14'
+gem 'uglifier' #, '>= 1.3.0'
+gem 'coffee-rails' #, '~> 4.0.0'
 gem 'render_anywhere', require: false
 
 gem 'bootstrap-sass'
