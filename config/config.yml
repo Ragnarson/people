@@ -43,40 +43,6 @@ defaults: &defaults
   rollbar:
     access_token:         token
 
-heroku_settings: &heroku_settings
-  <<: *defaults
-  github_client_id:     <%= ENV['GITHUB_CLIENT_ID'] %>
-  github_secret:        <%= ENV['GITHUB_CLIENT_SECRET'] %>
-  google_client_id:     <%= ENV['GOOGLE_CLIENT_ID'] %>
-  google_secret:        <%= ENV['GOOGLE_CLIENT_SECRET'] %>
-  google_domain:        <%= ENV['GOOGLE_DOMAIN'] %>
-  api_token:            <%= ENV['API_TOKEN'] %>
-  secret_token_key:     <%= ENV['SECRET_TOKEN_KEY'] %>
-  sendgrid:
-    login:              <%= ENV['SENDGRID_USERNAME'] %>
-    password:           <%= ENV['SENDGRID_PASSWORD'] %>
-    domain:             <%= ENV['SENDGRID_DOMAIN'] %>
-  emails:
-    from:               <%= ENV['EMAIL_FROM'] %>
-    pm:                 <%= ENV['EMAIL_PM'] %>
-    internal:           <%= ENV['EMAIL_INTERNAL'] %>
-    social:             <%= ENV['EMAIL_SOCIAL'] %>
-    support:            <%= ENV['EMAIL_SUPPORT'] %>
-  hipchat:
-    active:             <%= ENV['HIPCHAT_ACTIVE'] %>
-    api_token:          <%= ENV['HIPCHAT_API_TOKEN'] %>
-    author_name:        <%= ENV['HIPCHAT_AUTHOR_NAME'] %>
-    notify_users:       <%= ENV['HIPCHAT_NOTIFY_USERS'] %>
-    message_color:      <%= ENV['HIPCHAT_MESSAGE_COLOR'] %>
-    room_name:          <%= ENV['HIPCHAT_ROOM_NAME'] %>
-  company_name:         <%= ENV['COMPANY_NAME'] %>
-  domain:               <%= ENV['DOMAIN'] %>
-  tld_length:           <%= ENV['TLD_LENGTH'] %>
-  feature:
-    new_available_view: <%= ENV['AVAILABLE_VIEW'] %>
-  rollbar:
-    access_token:       <%= ENV['ROLLBAR_ACCESS_TOKEN'] %>
-
 development:
   <<: *defaults
   domain: people.dev
@@ -102,7 +68,51 @@ test:
       api_token: 1234567890
 
 staging:
-  <<: *heroku_settings
+  <<: *defaults
 
 production:
-  <<: *heroku_settings
+  <<: *defaults
+  google_client_id:        <%= ENV['GOOGLE_CLIENT_ID'] %>
+  google_secret:           <%= ENV['GOOGLE_SECRET'] %>
+  google_domain:           <%= ENV['GOOGLE_DOMAIN'] %>
+  github_client_id:        <%= ENV['GITHUB_CLIENT_ID'] %>
+  github_secret:           <%= ENV['GITHUB_SECRET'] %>
+  company_name:            <%= ENV['COMPANY_NAME'] %>
+  calendar_id:             <%= ENV['CALENDAR_ID'] %>
+  calendar_summary_regex:  <%= ENV['CALENDAR_SUMMARY_REGEX'] %>
+  emails:
+    from:                  <%= ENV['EMAIL_FROM'] %>
+    pm:                    <%= ENV['EMAIL_PM'] %>
+    internal:              <%= ENV['EMAIL_INTERNAL'] %>
+    social:                <%= ENV['EMAIL_SOCIAL'] %>
+    support:               <%= ENV['EMAIL_SUPPORT'] %>
+  tld_length:              <%= ENV['TLD_LENGTH'] %>
+  domain:                  <%= ENV['DOMAIN'] %>
+  sendgrid:
+    login:                 <%= ENV['SENDGRID_LOGIN'] %>
+    password:              <%= ENV['SENDGRID_PASSWORD'] %>
+    domain:                <%= ENV['SENDGRID_DOMAIN'] %>
+  api_token:               <%= ENV['API_TOKEN'] %>
+  secret_token_key:        <%= ENV['SECRET_TOKEN_KEY'] %>
+  feature:
+    new_available_view:    <%= ENV['NEW_AVAILABLE_VIEW'] %>
+  features:
+    teams:                 <%= ENV['TEAMS'] %>
+    positions:             <%= ENV['POSITIONS'] %>
+    hipchat:
+      active:              <%= ENV['HIPCHAT_ACTIVE'] %>
+      api_token:           <%= ENV['HIPCHAT_API_TOKEN'] %>
+      author_name:         <%= ENV['HIPCHAT_AUTHOR_NAME'] %>
+      notify_users:        <%= ENV['HIPCHAT_NOTIFY_USERS'] %>
+      message_color:       <%= ENV['HIPCHAT_MESSAGE_COLOR'] %>
+      room_name:           <%= ENV['HIPCHAT_ROOM_NAME'] %>
+  slack:
+    active:                <%= ENV['SLACK_ACTIVE'] %>
+    token:                 <%= ENV['SLACK_TOKEN'] %>
+    team:                  <%= ENV['SLACK_TEAM'] %>
+    channel:               <%= ENV['SLACK_CHANNEL'] %>
+    username:              <%= ENV['SLACK_USERNAME'] %>
+    icon_url:              <%= ENV['SLACK_ICON_URL'] %>
+    slash_cmd_token:       <%= ENV['SLACK_SLASH_CMD_TOKEN'] %>
+  rollbar:
+    access_token:          <%= ENV['ROLLBAR_ACCESS_TOKEN'] %>
